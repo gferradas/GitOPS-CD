@@ -1,0 +1,23 @@
+# Example Jenkinsfile for building, testing, and deploying our microservice
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+                sh 'docker build -t my-microservice .'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'kubectl apply -f microservice-deployment.yaml'
+            }
+        }
+    }
+}
